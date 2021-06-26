@@ -95,7 +95,7 @@ apk add python3
 apk add py3-pip
 apk add ruby
 gem install toilet
-git clone https://github.com/TheSpeedX/TBomb.git
+git clone https://github.com/sanketdon/TBomb
 cd TBomb
 pip3 install -r requirements.txt
 chmod +x TBomb.sh
@@ -107,7 +107,7 @@ chmod +x TBomb.sh
 To use the application, type in the following commands in GNU/Linux terminal.
 ```shell script
 sudo apt install git
-git clone https://github.com/TheSpeedX/TBomb.git
+git clone https://github.com/sanketdon/TBomb
 cd TBomb
 bash TBomb.sh
 ```
