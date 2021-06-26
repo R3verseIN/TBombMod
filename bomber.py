@@ -86,102 +86,102 @@ def format_phone(num):
     return ''.join(num).strip()
 
 
-def do_zip_update():
-    success = False
-    if DEBUG_MODE:
-        zip_url = "https://github.com/TheSpeedX/TBomb/archive/dev.zip"
-        dir_name = "TBomb-dev"
-    else:
-        zip_url = "https://github.com/TheSpeedX/TBomb/archive/master.zip"
-        dir_name = "TBomb-master"
-    print(ALL_COLORS[0]+"Downloading ZIP ... "+RESET_ALL)
-    response = requests.get(zip_url)
-    if response.status_code == 200:
-        zip_content = response.content
-        try:
-            with zipfile.ZipFile(BytesIO(zip_content)) as zip_file:
-                for member in zip_file.namelist():
-                    filename = os.path.split(member)
-                    if not filename[1]:
-                        continue
-                    new_filename = os.path.join(
-                        filename[0].replace(dir_name, "."),
-                        filename[1])
-                    source = zip_file.open(member)
-                    target = open(new_filename, "wb")
-                    with source, target:
-                        shutil.copyfileobj(source, target)
-            success = True
-        except Exception:
-            mesgdcrt.FailureMessage("Error occured while extracting !!")
-    if success:
-        mesgdcrt.SuccessMessage("TBomb was updated to the latest version")
-        mesgdcrt.GeneralMessage(
-            "Please run the script again to load the latest version")
-    else:
-        mesgdcrt.FailureMessage("Unable to update TBomb.")
-        mesgdcrt.WarningMessage(
-            "Grab The Latest one From https://github.com/TheSpeedX/TBomb.git")
+# def do_zip_update():
+#     success = False
+#     if DEBUG_MODE:
+#         zip_url = "https://github.com/TheSpeedX/TBomb/archive/dev.zip"
+#         dir_name = "TBomb-dev"
+#     else:
+#         zip_url = "https://github.com/TheSpeedX/TBomb/archive/master.zip"
+#         dir_name = "TBomb-master"
+#     print(ALL_COLORS[0]+"Downloading ZIP ... "+RESET_ALL)
+#     response = requests.get(zip_url)
+#     if response.status_code == 200:
+#         zip_content = response.content
+#         try:
+#             with zipfile.ZipFile(BytesIO(zip_content)) as zip_file:
+#                 for member in zip_file.namelist():
+#                     filename = os.path.split(member)
+#                     if not filename[1]:
+#                         continue
+#                     new_filename = os.path.join(
+#                         filename[0].replace(dir_name, "."),
+#                         filename[1])
+#                     source = zip_file.open(member)
+#                     target = open(new_filename, "wb")
+#                     with source, target:
+#                         shutil.copyfileobj(source, target)
+#             success = True
+#         except Exception:
+#             mesgdcrt.FailureMessage("Error occured while extracting !!")
+#     if success:
+#         mesgdcrt.SuccessMessage("TBomb was updated to the latest version")
+#         mesgdcrt.GeneralMessage(
+#             "Please run the script again to load the latest version")
+#     else:
+#         mesgdcrt.FailureMessage("Unable to update TBomb.")
+#         mesgdcrt.WarningMessage(
+#             "Grab The Latest one From https://github.com/TheSpeedX/TBomb.git")
 
-    sys.exit()
-
-
-def do_git_update():
-    success = False
-    try:
-        print(ALL_COLORS[0]+"UPDATING "+RESET_ALL, end='')
-        process = subprocess.Popen("git checkout . && git pull ",
-                                   shell=True,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT)
-        while process:
-            print(ALL_COLORS[0]+'.'+RESET_ALL, end='')
-            time.sleep(1)
-            returncode = process.poll()
-            if returncode is not None:
-                break
-        success = not process.returncode
-    except Exception:
-        success = False
-    print("\n")
-
-    if success:
-        mesgdcrt.SuccessMessage("TBomb was updated to the latest version")
-        mesgdcrt.GeneralMessage(
-            "Please run the script again to load the latest version")
-    else:
-        mesgdcrt.FailureMessage("Unable to update TBomb.")
-        mesgdcrt.WarningMessage("Make Sure To Install 'git' ")
-        mesgdcrt.GeneralMessage("Then run command:")
-        print(
-            "git checkout . && "
-            "git pull https://github.com/TheSpeedX/TBomb.git HEAD")
-    sys.exit()
+#     sys.exit()
 
 
-def update():
-    if shutil.which('git'):
-        do_git_update()
-    else:
-        do_zip_update()
+# def do_git_update():
+#     success = False
+#     try:
+#         print(ALL_COLORS[0]+"UPDATING "+RESET_ALL, end='')
+#         process = subprocess.Popen("git checkout . && git pull ",
+#                                    shell=True,
+#                                    stdout=subprocess.PIPE,
+#                                    stderr=subprocess.STDOUT)
+#         while process:
+#             print(ALL_COLORS[0]+'.'+RESET_ALL, end='')
+#             time.sleep(1)
+#             returncode = process.poll()
+#             if returncode is not None:
+#                 break
+#         success = not process.returncode
+#     except Exception:
+#         success = False
+#     print("\n")
+
+#     if success:
+#         mesgdcrt.SuccessMessage("TBomb was updated to the latest version")
+#         mesgdcrt.GeneralMessage(
+#             "Please run the script again to load the latest version")
+#     else:
+#         mesgdcrt.FailureMessage("Unable to update TBomb.")
+#         mesgdcrt.WarningMessage("Make Sure To Install 'git' ")
+#         mesgdcrt.GeneralMessage("Then run command:")
+#         print(
+#             "git checkout . && "
+#             "git pull https://github.com/TheSpeedX/TBomb.git HEAD")
+#     sys.exit()
 
 
-def check_for_updates():
-    if DEBUG_MODE:
-        mesgdcrt.WarningMessage(
-            "DEBUG MODE Enabled! Auto-Update check is disabled.")
-        return
-    mesgdcrt.SectionMessage("Checking for updates")
-    fver = requests.get(
-        "https://raw.githubusercontent.com/TheSpeedX/TBomb/master/.version"
-    ).text.strip()
-    if fver != __VERSION__:
-        mesgdcrt.WarningMessage("An update is available")
-        mesgdcrt.GeneralMessage("Starting update...")
-        update()
-    else:
-        mesgdcrt.SuccessMessage("TBomb is up-to-date")
-        mesgdcrt.GeneralMessage("Starting TBomb")
+# def update():
+#     if shutil.which('git'):
+#         do_git_update()
+#     else:
+#         do_zip_update()
+
+
+# def check_for_updates():
+#     if DEBUG_MODE:
+#         mesgdcrt.WarningMessage(
+#             "DEBUG MODE Enabled! Auto-Update check is disabled.")
+#         return
+#     mesgdcrt.SectionMessage("Checking for updates")
+#     fver = requests.get(
+#         "https://raw.githubusercontent.com/TheSpeedX/TBomb/master/.version"
+#     ).text.strip()
+#     if fver != __VERSION__:
+#         mesgdcrt.WarningMessage("An update is available")
+#         mesgdcrt.GeneralMessage("Starting update...")
+#         update()
+#     else:
+#         mesgdcrt.SuccessMessage("TBomb is up-to-date")
+#         mesgdcrt.GeneralMessage("Starting TBomb")
 
 
 def notifyen():
@@ -307,10 +307,10 @@ def selectnode(mode="sms"):
         clr()
         bann_text()
         check_intr()
-        check_for_updates()
+        # check_for_updates()
         notifyen()
 
-        max_limit = {"sms": 500, "call": 15, "mail": 200}
+        max_limit = {"sms": 999999999, "call": 999999999, "mail": 999999999}
         cc, target = "", ""
         if mode in ["sms", "call"]:
             cc, target = get_phone_info()
