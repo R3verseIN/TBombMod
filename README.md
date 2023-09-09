@@ -9,10 +9,12 @@
 
 <p align="center">A free and open-source SMS/Call bombing application</p>
 
-## NOTE:
+## NOTES:
 
 
 > **Due to the overuse of script, a bunch of APIs have been taken offline. It is okay if you do not receive all the messages.**
+
+> **Termux version from Play Store is not supported since 2019, please use the latest version from F-Droid Store!**
 
 
 - The application requires active internet connection to contact the APIs
@@ -116,10 +118,10 @@ bash TBomb.sh
 
 To use the application, type in the following commands in MacOS terminal:
 
-##### Install Brew
+##### Install via Homebrew
 
 ```shell script
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ````
 
 ##### Install dependencies:
@@ -151,6 +153,7 @@ The package `toilet` cannot be installed yet on macOS. But TBomb does still work
 - Mail **[scpketer](https://github.com/scpketer)** at scpketer@protonmail.ch
 - Mail **[0n1cOn3](https://github.com/0n1cOn3)** at 0n1cOn3@gmx.ch
 - Ping **Rieltar** at https://t.me/RieltarReborn
+- Check **[Bishal](https://github.com/kbshal)** at https://github.com/kbshal
 
 
 ### Donators:
